@@ -1,0 +1,143 @@
+/* 1. RESET GENERAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background: radial-gradient(circle, #ffafbd, #ffc3a0, #ff677d);
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* 2. CAPAS DE EFECTOS */
+.lluvia-corazones {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.explosion-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1000; /* Por encima de todo */
+}
+
+/* 3. CONTENEDOR DE FOTOS */
+.corazon-galeria {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.foto {
+    position: absolute;
+    width: 320px; /* Tamaño grande */
+    height: 320px;
+    object-fit: cover;
+    pointer-events: auto;
+    
+    /* MÁSCARA DE CORAZÓN CURVO */
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+    -webkit-mask-size: 100%;
+    mask-size: 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3));
+    animation: flotar 4s infinite ease-in-out;
+}
+
+/* 4. POSICIONAMIENTO MANUAL DE LAS 5 FOTOS */
+.f1 { top: 5%; left: 5%; --rot: -12deg; }
+.f2 { top: 5%; right: 5%; --rot: 12deg; }
+.f3 { bottom: 8%; left: 8%; --rot: -15deg; }
+.f4 { bottom: 8%; right: 8%; --rot: 15deg; }
+.f5 { bottom: 2%; left: 50%; transform: translateX(-50%); --rot: 0deg; }
+
+/* 5. TEXTO CENTRAL (LA CARTA) */
+.centro-romantico {
+    position: relative;
+    text-align: center;
+    color: white;
+    max-width: 550px;
+    padding: 35px;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 40px;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.centro-romantico h1 { font-size: 3rem; margin-bottom: 20px; }
+.centro-romantico p { font-size: 1.2rem; line-height: 1.6; }
+
+/* 6. ANIMACIONES */
+@keyframes flotar {
+    0%, 100% { transform: translate(var(--translateX, 0), 0) rotate(var(--rot, 0deg)); }
+    50% { transform: translate(var(--translateX, 0), -30px) rotate(calc(var(--rot, 0deg) + 4deg)); }
+}
+
+/* Ajuste para que la foto f5 no pierda el centrado */
+.f5 { --translateX: -50%; }
+
+.corazon-pixel {
+    position: absolute;
+    color: white;
+    filter: drop-shadow(0 0 10px pink);
+    animation: lluvia linear infinite;
+}
+
+@keyframes lluvia {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* EXPLOSIÓN DEL CORAZÓN GIGANTE */
+.corazon-gigante {
+    position: absolute;
+    font-size: 0px;
+    filter: drop-shadow(0 0 80px #ff4d6d);
+    animation: crecerExplosion 2.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards;
+}
+
+@keyframes crecerExplosion {
+    0% { font-size: 0px; opacity: 0; transform: scale(0); }
+    80% { font-size: 650px; opacity: 1; transform: scale(1.1); }
+    100% { font-size: 850px; opacity: 0; transform: scale(1.4); filter: blur(40px); }
+}
+
+.particula {
+    position: absolute;
+    animation: dispersar 2s ease-out forwards;
+}
+
+@keyframes dispersar {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translate(0,0); }
+    25% { transform: translate(10px, 10px); }
+    75% { transform: translate(-10px, -10px); }
+}
